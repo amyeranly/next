@@ -60,9 +60,13 @@ for index, group in enumerate(groups, start=1):
             # Add current transaction hash to the seen_hashes set
             seen_hashes.add(tx["hash"])
             if tx["from"] in addresses and tx["to"] in addresses and tx["from"] != tx["to"]:
-                transfer_str = (f'hash: "{tx["hash"]}" from: "{tx["from"]}" to: "{tx["to"]}" '
-                                f'tokenSymbol: "ETH" value: "{int(tx["value"]) / (10 ** 18)}"')
-                group_token_transfers[index].append(transfer_str)
+                if tx["input"].startswith("0x"):
+                    transfer_str = (f'hash: "{tx["hash"]}" from: "{tx["from"]}" to: "{tx["to"]}" '
+                                    f'tokenSymbol: "ETH" value: "{int(tx["value"]) / (10 ** 18)}"')
+                    group_token_transfers[index].append(transfer_str)
+                else:
+                    print(f"Transaction with methodId not 0x: from {tx['from']} to {tx['to']}")
+
 
 max_len = max([len(v) for v in group_token_transfers.values()]) + 2  # +2 because of the "GROUP X" and address lines
 df = pd.DataFrame(index=range(max_len))
