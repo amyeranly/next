@@ -7,7 +7,6 @@ def load_addresses_from_csv(csv_path):
     addresses_df = pd.read_csv(csv_path)
     return set(addresses_df['Address'])
 
-# 定义一个函数来从txt文件中提取地址
 def extract_addresses_from_txt(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
